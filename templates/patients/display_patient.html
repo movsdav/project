@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="content-wrapper">
+        <div class="card" >
+            <div class="card-body">
+                <h4 class="card-title">{{ patient.first_name }} {{ patient.last_name }}, {{ patient.age }}</h4>
+                <h6 class="card-subtitle mb-2 text-muted">{{ patient.date }}</h6>
+                <p class="card-text">{{ patient.diagnosis }}</p>
+                <h6 class="card-text mb-2 text-muted">UUID: {{ patient.uuid }}</h6>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}

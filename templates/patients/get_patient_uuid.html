@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <div class="content-wrapper">
+        {% if patient_not_found %}
+            <div class="alert alert-warning" role="alert">
+                Patient not found!
+                Please check UUID!
+            </div>
+        {% endif %}
+        {% crispy form %}
+    </div>
+
+{% endblock %}
