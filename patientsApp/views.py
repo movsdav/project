@@ -13,10 +13,9 @@ class PatientCreateView(CreateView):
     model = Patient
     form_class = PatientForm
     template_name = 'patients/create_patient.html'
-    # success_url = reverse_lazy()
 
     def get_success_url(self):
-        return reverse('display_patient', kwargs={'uuid':self.object.uuid})
+        return reverse('display_patient', kwargs={'uuid': self.object.uuid})
 
 
 class PatientUUIDView(View):
