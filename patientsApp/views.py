@@ -1,9 +1,8 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse, reverse_lazy
 from django.views.generic.edit import CreateView
-from django.views.generic import DetailView
+from django.views.generic import DetailView, ListView, DeleteView, UpdateView
 from django.views import View
-from django.contrib.messages.views import SuccessMessageMixin
 
 from .models import Patient
 from .forms import PatientForm, PatientUUIDForm
@@ -13,6 +12,11 @@ class PatientCreateView(CreateView):
     model = Patient
     form_class = PatientForm
     template_name = 'patients/create_patient.html'
+
+    def form_valid(self, form):
+        instance = form.save()
+        self.request.user.doctor.patients.add(instance)
+        return super().form_valid(form)
 
     def get_success_url(self):
         return reverse('display_patient', kwargs={'uuid': self.object.uuid})
@@ -48,6 +52,33 @@ class PatientDetailView(DetailView):
     model = Patient
     context_object_name = 'patient'
     template_name = 'patients/display_patient.html'
+
+    def get_object(self, queryset=None):
+        return Patient.objects.get(uuid=self.kwargs.get('uuid'))
+
+
+class PatientListView(ListView):
+    template_name = 'patients/patients_list.html'
+    model = Patient
+    context_object_name = 'patients'
+
+    def get_queryset(self):
+        return self.request.user.doctor.patients.all()
+
+
+class PatientDeleteView(DeleteView):
+    model = Patient
+    success_url = reverse_lazy('patient_list')
+
+    def get_object(self, queryset=None):
+        return Patient.objects.get(uuid=self.kwargs.get('uuid'))
+
+
+class PatientUpdateView(UpdateView):
+    model = Patient
+    form_class = PatientForm
+    success_url = reverse_lazy('patient_list')
+    template_name = 'patients/update_patient.html'
 
     def get_object(self, queryset=None):
         return Patient.objects.get(uuid=self.kwargs.get('uuid'))

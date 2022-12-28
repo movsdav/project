@@ -33,6 +33,7 @@
                     <a class="nav-item nav-link" href="{% url 'login' %}">Log in</a>
                     <a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
                 {% else %}
+                    <a href="{% url 'patient_list' %}" class="nav-item nav-link">See your patients</a>
                     <p class="nav-item nav-link">{{ user.username }}</p>
                     <a class="nav-item nav-link" href="{% url 'logout' %}">Log out</a>
                 {% endif %}
@@ -40,6 +41,7 @@
             </div>
         </div>
     </nav>
+    <hr />
 </header>
 {% block content %}
 

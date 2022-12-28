@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h3>My patients: </h3>
+    {% if patients %}
+        {% for patient in patients %}
+            <div class="card" style="margin: 2rem">
+                <div class="card-body">
+                    <h4 class="card-title">{{ patient.first_name }} {{ patient.last_name }}, {{ patient.age }}</h4>
+                    <h6 class="card-subtitle mb-2 text-muted">{{ patient.date }}</h6>
+                    <p class="card-text">{{ patient.diagnosis }}</p>
+                    <h6 class="card-text mb-2 text-muted">UUID: {{ patient.uuid }}</h6>
+                    <a href="{% url 'update_patient' uuid=patient.uuid %}" class="card-link btn btn-outline-warning">Edit</a>
+                    <a href="" class="card-link">
+                        <form method="post" action="{% url 'delete_patient' uuid=patient.uuid %}">
+                            {% csrf_token %}
+                            <input class="btn btn-danger" type="submit" value="Delete">
+                        </form>
+                    </a>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <h4>Great! You don't have patients. You can have some coffee!</h4>
+    {% endif %}
+
+{% endblock %}
